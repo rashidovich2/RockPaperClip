@@ -18,20 +18,9 @@ def WhoWin(player_item, pc_item):
     if player_item == pc_item:
         return 'draw'
     elif player_item == 'rock':
-        if pc_item == 'paper':
-            return 'pc'
-        else:
-            return 'player'
-    elif player_item == 'paper':
-        if pc_item == 'rock':
-            return 'pc'
-        else:
-            return 'player'
-    elif player_item == 'clip':
-        if pc_item == 'rock':
-            return 'pc'
-        else:
-            return 'player'
+        return 'pc' if pc_item == 'paper' else 'player'
+    elif player_item in ['paper', 'clip']:
+        return 'pc' if pc_item == 'rock' else 'player'
     else:
         raise Exception('player_item or pc_item not in game_items!')
 
@@ -41,7 +30,7 @@ def Game():
         play = True
         print(game_welcome)
         print(game_help)
-        while play is True:
+        while play:
             print()
             print(f'Current scope: {str(game_player_scope)}:{str(game_pc_scope)}:{str(game_draws)}')
             player_item = input('[?] Rock, paper or clip: ').lower()
@@ -52,7 +41,6 @@ def Game():
                 if win == 'draw':
                     print('It\'s a DRAW!')
                     game_draws += 1
-                    continue
                 elif win == 'pc':
                     print('PC win!')
                     game_pc_scope += 1
@@ -64,26 +52,25 @@ def Game():
                 else:
                     print('HOW YOU DID IT!?')
                     raise Exception('Out from loop.')
-            else:
-                if player_item == 'exit':
-                    if game_player_scope > game_pc_scope:
-                        print(f'You did it! You won PC with scope: {str(game_player_scope)}:{str(game_pc_scope)}. Draws: {str(game_draws)}')
-                    elif game_player_scope < game_pc_scope:
-                        print(f'So sad! You lose to PC with scope: {str(game_pc_scope)}:{str(game_player_scope)}. Draws: {str(game_draws)}')
-                    elif game_draws > 0:
-                        print(f'It\'s a draw... Scope: {str(game_player_scope)}:{str(game_pc_scope)}:{str(game_draws)}')
-                    else:
-                        print('You don\'t play!')
-                    play = False
-                elif player_item == 'rules':
-                    print(game_rules)
-                    continue
-                elif player_item == 'help':
-                    print(game_help)
-                    continue
+            elif player_item == 'exit':
+                if game_player_scope > game_pc_scope:
+                    print(f'You did it! You won PC with scope: {str(game_player_scope)}:{str(game_pc_scope)}. Draws: {str(game_draws)}')
+                elif game_player_scope < game_pc_scope:
+                    print(f'So sad! You lose to PC with scope: {str(game_pc_scope)}:{str(game_player_scope)}. Draws: {str(game_draws)}')
+                elif game_draws > 0:
+                    print(f'It\'s a draw... Scope: {str(game_player_scope)}:{str(game_pc_scope)}:{str(game_draws)}')
                 else:
-                    print('ONLY "rock", "paper" & "clip"!')
-                    continue
+                    print('You don\'t play!')
+                play = False
+            elif player_item == 'rules':
+                print(game_rules)
+                continue
+            elif player_item == 'help':
+                print(game_help)
+                continue
+            else:
+                print('ONLY "rock", "paper" & "clip"!')
+                continue
     except KeyboardInterrupt as e:
         pass
     except NameError as e:
